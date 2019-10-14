@@ -22,14 +22,6 @@ Script to perform blastn, using only one gene as input and several genomes and t
  -min_qc 60                      - minimum query coverage per high-scoring segment pair (float)
  -min_ident 70                   - minimum percent of identity of BLAST hits
 ```
-
-
-Tested with:
-```
-BLAST 2.9.0
-bedtools v2.27.1
-samtools v1.7
-```
 Output: 
 
 ```
@@ -37,4 +29,11 @@ Output:
 *.bed - bed-files with alignment' coordinates
 *.fasta - fasta with sequences, extracted according to coordinates 
 *_blastn.fasta - resulting multifasta with all hits in all genomes
+```
+
+Tested with:
+```
+BLAST 2.9.0
+bedtools v2.27.1
+samtools v1.7
 ```
