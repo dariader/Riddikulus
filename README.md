@@ -1,0 +1,2 @@
+# Riddikulus
+Helpful bioinformatics scripts
