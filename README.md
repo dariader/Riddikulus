@@ -2,7 +2,7 @@
 Helpful bioinformatics scripts
 
 
-# blastn_to_fasta.sh
+### blastn_to_fasta.sh
 Script to perform blastn, using only one gene as input and several genomes and then parse blast alignments into multifasta
 
 Usage example: 
