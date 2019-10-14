@@ -19,8 +19,8 @@ Script to perform blastn, using only one gene as input and several genomes and t
  -gene gene.fasta                - query fasta file with single sequence
  -genomes_file genome_list.txt   - list of path to genomes' files in fasta format. One path per line.  
  -threads 1                      - integer number of threads to use
- -min_qc 60                      - minimum query coverage per high-scoring segment pair (float)
- -min_ident 70                   - minimum percent of identity of BLAST hits
+ -min_qc 60                      - minimum query coverage per high-scoring segment pair (float value)
+ -min_ident 70                   - minimum percent of identity of BLAST hits (float value)
 ```
 Output: 
 
