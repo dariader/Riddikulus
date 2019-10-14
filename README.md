@@ -30,3 +30,11 @@ BLAST 2.9.0
 bedtools v2.27.1
 samtools v1.7
 ```
+Output: 
+
+```
+*_tab - tab-formatted BLASTn output
+*.bed - bed-files with alignment' coordinates
+*.fasta - fasta with sequences, extracted according to coordinates 
+*_blastn.fasta - resulting multifasta with all hits in all genomes
+```
