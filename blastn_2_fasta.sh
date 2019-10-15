@@ -66,15 +66,22 @@ done
 echo ".............Preparing database"
 makeblastdb -dbtype nucl -in $GENE
 echo ".............Database is ready.."
-while read INPUT;  do echo "... Running blast on ${INPUT%".fasta"}"; 
-	blastn -db $GENE -query $INPUT -outfmt 6 -num_threads $threads > "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab;
+while read INPUT;  do echo "... Running blast on ${INPUT%".fasta"}";
+	for file in $INPUT;
+	do fname="${file##*/}"
+        awk '/>/{sub(">","&"FILENAME"_strain_");sub(/\.fasta/,x)}1' "$file" > temp; done
+	echo "renamed headers" 
+	blastn -db $GENE -query temp -outfmt 6 -num_threads $threads > "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab;
 	awk '{print $1"\t"$7-1"\t"$8"\t"$2}' "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab > "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed;
-	samtools faidx $INPUT;
-	bedtools getfasta -fi $INPUT -bed "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed -fo "${GENE%".fasta"}"_"${INPUT%".fasta"}".fasta; done  < $GENOMES
+	samtools faidx temp;
+	bedtools getfasta -fi temp -bed "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed -fo "${GENE%".fasta"}"_"${INPUT%".fasta"}".fasta
+	rm temp; done  < $GENOMES
 	cat "${GENE%".fasta"}"_*.fasta > ${GENE%".fasta"}_blastn.fasta
 
-echo ".............Removing fai files"
+echo ".............Removing empty files"
 rm *.fai
 #find . -size 0 -delete 
 echo "Done"
 echo "Results in ${GENE%".fasta"}_blastn.fasta"
+
+
