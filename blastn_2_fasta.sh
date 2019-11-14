@@ -5,6 +5,7 @@ Script to perform blast, using only one gene as input and several genomes and th
 
 Usage example: ./blastn_to_fasta.sh -gene gene.fasta -genomes_file genome_list.txt -threads 1 -min_qc 60 -min_ident 70
 
+NB: current release have a _bug_ with "min_qc" argument. For convinience, it is set to 0.  
 '''
 
 while [ -n "$1" ]; do # while loop starts
@@ -52,16 +53,7 @@ while [ -n "$1" ]; do # while loop starts
  
     shift
  
-done
- 
-total=1
- 
-for param in "$@"; do
- 
-    echo "#$total: $param"
- 
-    total=$(($total + 1))
- 
+
 done
 echo ".............Preparing database"
 makeblastdb -dbtype nucl -in $GENE
@@ -71,17 +63,19 @@ while read INPUT;  do echo "... Running blast on ${INPUT%".fasta"}";
 	do fname="${file##*/}"
         awk '/>/{sub(">","&"FILENAME"_strain_");sub(/\.fasta/,x)}1' "$file" > temp; done
 	echo "renamed headers" 
-	blastn -db $GENE -query temp -outfmt 6 -num_threads $threads > "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab;
+	blastn -db $GENE -qcov_hsp_perc 0 -perc_identity $min_ident -query temp -outfmt 6 -num_threads $threads > "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab;
 	awk '{print $1"\t"$7-1"\t"$8"\t"$2}' "${GENE%".fasta"}"_"${INPUT%".fasta"}"_blast_tab > "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed;
 	samtools faidx temp;
-	bedtools getfasta -fi temp -bed "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed -fo "${GENE%".fasta"}"_"${INPUT%".fasta"}".fasta
+	bedtools getfasta -s -fi temp -bed "${GENE%".fasta"}"_"${INPUT%".fasta"}".bed -fo "${GENE%".fasta"}"_"${INPUT%".fasta"}".fasta
 	rm temp; done  < $GENOMES
 	cat "${GENE%".fasta"}"_*.fasta > ${GENE%".fasta"}_blastn.fasta
 
-echo ".............Removing empty files"
+echo ".............Removing temp files"
 rm *.fai
-#find . -size 0 -delete 
+rm *_tab
+rm *.nhr
+rm *.nin
+rm *.nsq
+rm *.bed
 echo "Done"
-echo "Results in ${GENE%".fasta"}_blastn.fasta"
-
-
+echo "Results in ${GENE%".fasta"}_blastn.fasta
