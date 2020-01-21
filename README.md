@@ -37,3 +37,36 @@ BLAST 2.9.0
 bedtools v2.27.1
 samtools v1.7
 ```
+
+### pilon_polish.sh
+
+Performs polishing with Pilon
+
+Usage example:
+
+```
+bash ../polish.sh -reference my_genome.fasta -1 forward_reads.fq -2 reverse_reads.fq -num_iterations 10 -prefix_name test_pilon
+
+```
+
+Parameters: 
+
+```
+-reference - draft genome to polish (.fasta, .fna, etc.)
+-1, -2 - forward and reverse reads, respectively ( fastq, fq, ..)
+-num_iterations - number of polishing iterations <int>
+-prefix_name - prefix for temporary (.bed) files
+
+```
+Output: 
+
+```
+.fasta - polished contigs
+.bed - aligned reads to contigs
+```
+
+
+
+
+
+
