@@ -53,9 +53,9 @@ Parameters:
 
 ```
 -reference - draft genome to polish (.fasta, .fna, etc.)
--1, -2 - forward and reverse reads, respectively ( fastq, fq, ..)
+-1, -2 - forward and reverse reads, respectively ( fastq, fq, fq.gz  ..)
 -num_iterations - number of polishing iterations <int>
--prefix_name - prefix for temporary (.bed) files
+-prefix_name - prefix for temporary (.bam) files
 
 ```
 Output: 
