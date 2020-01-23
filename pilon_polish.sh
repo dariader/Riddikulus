@@ -61,9 +61,9 @@ GREEN='\033[0;32m'      #  ${GREEN}
 NORMAL='\033[0m' #  ${NORMAL}
 BOLD='\033[1m' # {BOLD}
 
-cp $REFERENCE pilon_"$x"_"$REFERENCE"
 
 x=0
+cp $REFERENCE pilon_"$x"_"$REFERENCE"
 while [ $x -le $NUM_IT ]
 do
   echo -e "${BOLD}${RED} $x iteration of polishing... ${NORMAL}"
@@ -74,9 +74,10 @@ do
   bwa mem -t 8 pilon_"$x"_"$REFERENCE" $FR $RR | samtools sort -o "$PNAME".bam;
   samtools index "$PNAME".bam	
   echo -e "${BOLD}${GREEN} ...done ${NORMAL}"
-  echo -e "${BOLD}${RED} Starting $NUM_IT iterations of polishing ${NORMAL}"
-  pilon --genome pilon_"$x"_"$REFERENCE" --frags "$PNAME".bam --threads 8 --output pilon_"$x"_"$REFERENCE"	
+  echo -e "${BOLD}${RED} Starting $x iteration of polishing ${NORMAL}"
+  y=$x
   x=$(( $x + 1 ))
+  pilon --genome pilon_"$y"_"$REFERENCE" --frags "$PNAME".bam --threads 8 --output pilon_"$x"_"${REFERENCE%".fasta"}"	
 done
 
 echo -e "${BOLD}${GREEN} finished ${NORMAL}"
